@@ -11,6 +11,7 @@
 * JDK版本： 17
 
 ### 开始使用
+* spingboot项目引用jar包
 * 创建本地消息表
 * yml中指定MQ厂商类型
 * 使用示例
@@ -43,6 +44,7 @@ CREATE TABLE `local_message_record` (
 ~~~
 transaction-mq:
   type: rocketMQ
+  maxRetryTimes: -1
 ~~~
 
 **3.开始使用**
@@ -80,6 +82,7 @@ mysql> select * from local_message_record;
 ~~~
 
 ### TODO
-1. [x] 支持扩展本地消息表
-2. [x] 支持配置覆盖，满足自定义场景
-3. [x] 支持其它厂商mq
+1. [x] maven中心仓库推送
+2. [x] 支持扩展本地消息表
+3. [x] 支持配置覆盖，满足自定义场景
+4. [x] 支持其它厂商mq
