@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sys?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    username: root
+    password: 123456
+
+transaction-mq:
+  type: rocketMQ
+  maxRetryTimes: -1
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: ttl-producer
+  consumer:
+    group: my-group
