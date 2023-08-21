@@ -12,5 +12,7 @@ public interface DefaultSqlStatement {
 
     String select();
 
+    String selectFailed();
+
 
 }

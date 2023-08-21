@@ -2,10 +2,12 @@ package com.transactionmq.starter.param;
 
 import com.transactionmq.starter.enums.EnumMessageSendModel;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 @Data
+@Accessors(chain = true)
 public class MessageParam implements Serializable {
 
     /**
@@ -34,7 +36,9 @@ public class MessageParam implements Serializable {
     private String body;
 
     /**
-     * 消息key，可作为检索条件,方便检索日志
+     * 消息key
+     * 可作为检索条件,方便检索日志
+     * 可作为顺序消息key
      */
     private String msgKey;
 

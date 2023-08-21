@@ -18,7 +18,6 @@ public class CommonServiceImpl implements CommonService {
 
     @Transactional
     public void sendMessage() {
-
         MessageParam messageParam = new MessageParam();
         messageParam.setService("订单服务");
         messageParam.setBusiness("创建订单");
@@ -30,34 +29,28 @@ public class CommonServiceImpl implements CommonService {
         messageManager.sendMessage(messageParam);
     }
 
-    @Transactional
-    @Override
-    public void sendMessageRollback() {
-
-        MessageParam messageParam = new MessageParam();
-        messageParam.setTopic("order-topic");
-        messageManager.sendMessage(messageParam);
-
-        log.info("执行成功");
-
-        int i = 1 / 0;
-    }
-
-
     @Override
     public void sendMessageNoTran() {
-
         MessageParam messageParam = new MessageParam();
         messageParam.setTopic("order-topic");
         messageParam.setBody("HELLO WORD");
-
         messageManager.sendMessage(messageParam);
-
-        log.info("执行成功");
     }
 
-    public void sendMqMessage() {
+    @Transactional
+    @Override
+    public void sendMessageRollback() {
+        MessageParam messageParam = new MessageParam();
+        messageParam.setTopic("order-topic");
+        messageManager.sendMessage(messageParam);
+        log.info("出现异常，不会发送mq消息");
+        throw new RuntimeException("异常");
+    }
 
+    @Override
+    public void messageRetry() {
+        messageManager.messageRetry();
+        log.info("消息重试完成");
     }
 
 }

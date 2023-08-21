@@ -18,19 +18,19 @@ public class CommonController {
         commonService.sendMessage();
     }
 
-    @GetMapping(value = "/sendMessageRollback")
-    public void sendMessageRollback() {
-        commonService.sendMessageRollback();
-    }
-
     @GetMapping(value = "/sendMessageNoTran")
     public void sendMessageNoTran() {
         commonService.sendMessageNoTran();
     }
 
-    @GetMapping(value = "/sendMqMessage")
-    public void sendMqMessage() {
-        commonService.sendMqMessage();
+    @GetMapping(value = "/sendMessageRollback")
+    public void sendMessageRollback() {
+        commonService.sendMessageRollback();
+    }
+
+    @GetMapping(value = "/messageRetry")
+    public void messageRetry() {
+        commonService.messageRetry();
     }
 
 }

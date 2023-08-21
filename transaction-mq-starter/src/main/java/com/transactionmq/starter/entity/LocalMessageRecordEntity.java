@@ -1,6 +1,7 @@
 package com.transactionmq.starter.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.transactionmq.starter.enums.EnumMessageSendModel;
 import com.transactionmq.starter.enums.EnumMessageStatus;
 import com.transactionmq.starter.param.MessageParam;
 import lombok.Data;
@@ -93,17 +94,28 @@ public class LocalMessageRecordEntity implements Serializable {
     private Date updateTime;
 
 
-    public static LocalMessageRecordEntity convertToEntity(MessageParam config, Integer maxRetryTimes) {
+    public static LocalMessageRecordEntity convertToEntity(MessageParam param, Integer maxRetryTimes) {
         return new LocalMessageRecordEntity()
-                .setService(config.getService())
-                .setBusiness(config.getBusiness())
-                .setModel(config.getModel().getCode())
-                .setTopic(config.getTopic())
-                .setTags(config.getTags())
-                .setBody(config.getBody())
+                .setService(param.getService())
+                .setBusiness(param.getBusiness())
+                .setModel(param.getModel().getCode())
+                .setTopic(param.getTopic())
+                .setTags(param.getTags())
+                .setMsgKey(param.getMsgKey())
+                .setBody(param.getBody())
                 .setStatus(EnumMessageStatus.SENDING.getCode())
                 .setMaxRetryTimes(maxRetryTimes)
                 .setCreateTime(new Date());
     }
 
+    public static MessageParam convertToMessageParam(LocalMessageRecordEntity entity) {
+        return new MessageParam()
+                .setService(entity.getService())
+                .setBusiness(entity.getBusiness())
+                .setTopic(entity.getTopic())
+                .setTags(entity.getTags())
+                .setBody(entity.getBody())
+                .setMsgKey(entity.getMsgKey())
+                .setModel(EnumMessageSendModel.getMessageSendModel(entity.getModel()));
+    }
 }

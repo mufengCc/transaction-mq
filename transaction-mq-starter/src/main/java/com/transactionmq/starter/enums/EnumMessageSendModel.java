@@ -20,7 +20,7 @@ public enum EnumMessageSendModel {
         this.name = name;
     }
 
-    public static EnumMessageSendModel getCode(String code) {
+    public static EnumMessageSendModel getMessageSendModel(String code) {
 
         if (StringUtils.isNullOrEmpty(code)) {
             return ASYNC;

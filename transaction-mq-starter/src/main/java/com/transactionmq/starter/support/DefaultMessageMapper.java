@@ -3,6 +3,7 @@ package com.transactionmq.starter.support;
 import com.transactionmq.starter.config.MyAutoConfiguration;
 import com.transactionmq.starter.entity.LocalMessageRecordEntity;
 import com.transactionmq.starter.enums.EnumMessageStatus;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Objects;
 
 public class DefaultMessageMapper extends MyAutoConfiguration {
@@ -68,6 +70,12 @@ public class DefaultMessageMapper extends MyAutoConfiguration {
         SqlParameterSource ps = new BeanPropertySqlParameterSource(entity);
         Integer currentRetryTimeS = jdbcTemplate.queryForObject(sql, ps, Integer.class);
         return currentRetryTimeS == null ? 0 : currentRetryTimeS;
+    }
+
+    public List<LocalMessageRecordEntity> selectFailed(LocalMessageRecordEntity entity) {
+        String sql = defaultSqlStatement.selectFailed();
+        SqlParameterSource ps = new BeanPropertySqlParameterSource(entity);
+        return jdbcTemplate.query(sql, ps, new BeanPropertyRowMapper<>(LocalMessageRecordEntity.class));
     }
 
 }

@@ -32,4 +32,11 @@ public class MessageManager {
         }
     }
 
+    /**
+     * 消息发送失败的重试逻辑
+     */
+    public void messageRetry() {
+        baseMessageSender.messageRetry();
+    }
+
 }
