@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.common.message.MessageConst;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -47,7 +48,7 @@ public class RocketMQProducer {
 
         CompletableFuture<SendResult> future = new CompletableFuture<>();
 
-        Message<String> message = MessageBuilder.withPayload(config.getBody()).build();
+        Message<String> message = buildMessage(config);
         rocketMQTemplate.asyncSend(getTopic(config), message, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
@@ -64,19 +65,19 @@ public class RocketMQProducer {
     }
 
     public SendResult syncSendMessage(MessageParam config) {
-        Message<String> message = MessageBuilder.withPayload(config.getBody()).build();
+        Message<String> message = buildMessage(config);
         return rocketMQTemplate.syncSend(getTopic(config), message);
     }
 
     public void onewaySendMessage(MessageParam config) {
-        Message<String> message = MessageBuilder.withPayload(config.getBody()).build();
+        Message<String> message = buildMessage(config);
         rocketMQTemplate.sendOneWay(getTopic(config), message);
     }
 
 
     public SendResult asyncSendOrderMessage(MessageParam config) throws Exception {
 
-        Message<String> message = MessageBuilder.withPayload(config.getBody()).build();
+        Message<String> message = buildMessage(config);
 
         CompletableFuture<SendResult> future = new CompletableFuture<>();
 
@@ -112,6 +113,12 @@ public class RocketMQProducer {
             sb.append(":").append(config.getTags());
         }
         return sb.toString();
+    }
+
+    private static Message<String> buildMessage(MessageParam config) {
+        return MessageBuilder.withPayload(config.getBody())
+                .setHeader(MessageConst.PROPERTY_KEYS, config.getMsgKey())
+                .build();
     }
 
 }
