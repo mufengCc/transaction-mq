@@ -1,1 +1,2 @@
 com.transactionmq.starter.config.MyAutoConfiguration
+org.apache.rocketmq.spring.autoconfigure.RocketMQAutoConfiguration

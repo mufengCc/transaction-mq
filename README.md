@@ -12,7 +12,6 @@
 ### 开始使用
 * spingboot项目引用jar包
 * 创建本地消息表
-* yml中指定MQ厂商类型
 * 使用示例
 * 数据库验证
 
@@ -38,15 +37,7 @@ CREATE TABLE `local_message_record` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 ~~~
 
-
-**2.yml中指定MQ厂商类型**
-~~~
-transaction-mq:
-  type: rocketMQ
-  maxRetryTimes: -1
-~~~
-
-**3.开始使用**
+**2.开始使用**
 ~~~
 @Slf4j
 @Service
@@ -69,7 +60,7 @@ public class CommonServiceImpl implements CommonService {
 
 }
 ~~~
-**4.数据库验证**
+**3.数据库验证**
 ~~~
 mysql> select * from local_message_record;
 +----+----------+----------+-------+-------------+------+----------------------------------+---------+----------------------+--------+-----------------+---------------------+-------------------------+-------------------------+-------------------------+

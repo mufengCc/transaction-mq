@@ -7,35 +7,20 @@ import com.transactionmq.starter.support.BaseMessageSender;
 import com.transactionmq.starter.support.DefaultMessageMapper;
 import com.transactionmq.starter.support.DefaultSqlStatement;
 import com.transactionmq.starter.support.DefaultSqlStatementImpl;
-import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(value = {"com.transactionmq.starter.**"})
+@ConditionalOnProperty(prefix = "rocketmq", value = "name-server", matchIfMissing = true)
 public class MyAutoConfiguration {
 
-    @Autowired
-    public DataSource dataSource;
-    @Autowired
-    public NamedParameterJdbcTemplate jdbcTemplate;
-
-
-    @Value("${rocketmq.name-server}")
-    private String nameServer;
-
-    @Value("${rocketmq.producer.group}")
-    private String producerGroup;
-
-    @Value("${transaction-mq.maxRetryTimes:-1}")
+    @Value("${rocketmq.maxRetryTimes:-1}")
     public Integer maxRetryTimes;
 
     @Bean
@@ -59,19 +44,9 @@ public class MyAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "transaction-mq", name = "type", havingValue = "rocketMQ")
-    public RocketMQProducer rocketMQProducer() {
-        return new RocketMQProducer(rocketMQTemplate());
+    public RocketMQProducer rocketMQProducer(RocketMQTemplate rocketMQTemplate) {
+        return new RocketMQProducer(rocketMQTemplate);
     }
 
-    @Bean
-    public RocketMQTemplate rocketMQTemplate() {
-        RocketMQTemplate rocketMQTemplate = new RocketMQTemplate();
-        DefaultMQProducer defaultMQProducer = new DefaultMQProducer();
-        defaultMQProducer.setNamesrvAddr(nameServer);
-        defaultMQProducer.setProducerGroup(producerGroup);
-        rocketMQTemplate.setProducer(defaultMQProducer);
-        return rocketMQTemplate;
-    }
 
 }

@@ -1,6 +1,5 @@
 package com.transactionmq.starter.core;
 
-import com.alibaba.fastjson.JSON;
 import com.transactionmq.starter.param.MessageParam;
 import com.transactionmq.starter.support.BaseMessageSender;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,6 @@ public class MessageManager {
     }
 
     public void sendMessage(MessageParam messageParam) {
-        log.info("【rocketMQ】发送消息,msgKey:{},请求参数:{}", messageParam.getMsgKey(), JSON.toJSONString(messageParam));
 
         if (TransactionSynchronizationManager.isSynchronizationActive()) {
             TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
@@ -27,6 +25,7 @@ public class MessageManager {
                     baseMessageSender.sendMessage(messageParam);
                 }
             });
+            log.info("【rocketMQ】发送消息,msgKey:{},初始化完成", messageParam.getMsgKey());
         } else {
             baseMessageSender.sendMessage(messageParam);
         }

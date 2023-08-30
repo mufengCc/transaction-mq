@@ -8,10 +8,6 @@ spring:
     username: root
     password: 123456
 
-transaction-mq:
-  type: rocketMQ
-  maxRetryTimes: -1
-
 rocketmq:
   name-server: 127.0.0.1:9876
   producer:

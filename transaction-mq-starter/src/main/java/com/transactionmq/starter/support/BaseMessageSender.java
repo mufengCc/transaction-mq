@@ -31,12 +31,18 @@ public class BaseMessageSender {
 
     public void sendMessage(MessageParam param) {
 
-        LocalMessageRecordEntity entity = LocalMessageRecordEntity.convertToEntity(param, maxRetryTimes);
-        int pkId = defaultMessageMapper.save(entity);
-        entity.setId(pkId);
+        LocalMessageRecordEntity entity = addDbData(param);
 
         sendMessageCommon(param, entity, SEND);
 
+    }
+
+    private LocalMessageRecordEntity addDbData(MessageParam param) {
+        LocalMessageRecordEntity entity = LocalMessageRecordEntity.convertToEntity(param, maxRetryTimes);
+        int pkId = defaultMessageMapper.save(entity);
+        entity.setId(pkId);
+        log.info("【rocketMQ】发送消息,msgKey:{},主键id:{},落库完成", param.getMsgKey(), pkId);
+        return entity;
     }
 
     public void messageRetry() {
